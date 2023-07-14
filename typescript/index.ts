@@ -51,7 +51,7 @@ const log = (condition: boolean, message: string): void =>
     }
 };
 
-const createVideo = ({ frameRate, framesDir, audioPath, videoOut, width, height, bitRate }: CreateVideoParams): Promise<void> => {
+const createVideo = ({ frameRate, framesDir, audioPath, videoOut, width, height }: CreateVideoParams): Promise<void> => {
     return new Promise((resolve, reject) => {
         const command = ffmpeg()
             .input(path.join(framesDir, '%06d.jpg'))
@@ -74,7 +74,10 @@ const createVideo = ({ frameRate, framesDir, audioPath, videoOut, width, height,
                 videoCodec = 'libx264';
         }
 
-        command.outputOptions(`-c:v ${videoCodec}`);
+        command.outputOptions([
+            `-c:v ${videoCodec}`,
+            `-qscale:v 0`
+        ]);
 
         if(audioPath !== null) {
             command.input(audioPath).outputOptions('-c:a aac');
@@ -142,6 +145,7 @@ const extractFrames = (videoFilePath: string): Promise<{ path: string; }> => {
         ffmpeg(videoFilePath)
             .on('end', () => resolve({ path: outPath }))
             .on('error', reject)
+            .outputOptions('-qscale:v 0')
             .output(path.join(outPath, '%06d.jpg'))
             .run();
     });
