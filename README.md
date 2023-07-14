@@ -16,5 +16,5 @@ render({
 });
 ```
 
-### Result
-https://github.com/seedr/imagerot-video-wrapper/assets/2825338/7668239d-07c2-4efa-9400-d3aafcab10c9
+### Result:
+https://github.com/seedr/imagerot-video-wrapper/assets/2825338/7d905cf8-34ac-4ac1-9e3b-290865d3ae53
